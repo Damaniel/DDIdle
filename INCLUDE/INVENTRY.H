@@ -18,26 +18,22 @@
    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
    DEALINGS IN THE SOFTWARE.
  */
-#ifndef __DDUNIDLE_H__
-#define __DDUNIDLE_H__
+#ifndef __INVENTRY_H__
+#define __INVENTRY_H__
 
-#include <stdio.h>
-#include <allegro.h>
+#include "ddunidle.h"
 
-#include "STRUCTS.H"
-#include "INVENTRY.H"
-#include "SKILLS.H"
+extern InventorySlot iventory[INVENTORY_SIZE];
 
-#define NUM_MASTERIES   2
+// Gets the slot in the inventory containing the specified item, or -1 if there
+// are no items of that type in the inventory
+int get_inventory_slot_of_item(int item_id);
 
-// Levels in the game are 1 to 100.  While the array checks generally 
-// keep this in mind, some checks might try to index out of range if the
-// mastery level is 100.  There's 
-extern unsigned int g_skill_exp_table[100];
-extern unsigned int g_mastery_exp_table[100];
-extern unsigned int g_mastery_exp_to_level_table[100];
+// Returns the number of free spaces in the inventory
+int get_inventory_free_space(void);
 
-extern volatile unsigned int g_skill_timer;
-extern volatile unsigned int g_game_timer;
+// Returns the lowest index in the inventory that has nothing in it, or -1
+// if the inventory is full.
+int get_first_free_inventory_spot();
 
 #endif

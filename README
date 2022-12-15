@@ -3,3 +3,27 @@
 An idle game with active components.
 
 More info TBD.
+
+## Notes about the timing loop for skills/masteries
+
+* The game render loop will run at 30 FPS
+* The core skill loop will run at 10 FPS, and action times will be set in tenths of a second (so a 6 second action takes 60 ticks)
+
+## Interrupt handlers
+The 10 FPS interrupt timer handler:
+    - increment the global skill timer
+
+The 30 FPS interrupt timer handler:
+    - increment the global game timer
+
+## Proc procedure in gmae loop
+For any skill/mastery:
+    - (When first started) Set the 'next proc' timer to the global skill timer + the proc rate
+    - Get the global skill timer
+    - If the global skill timer >= the next proc timer
+        - proc the mastery
+        - Set the 'next proc' timer to the global skill timer + the proc rate
+        - Add the experience for this mastery to the skill exp bar
+        - If the skill exp >= required XP to next skill level
+            - Increment the skill level
+

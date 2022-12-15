@@ -18,26 +18,14 @@
    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
    DEALINGS IN THE SOFTWARE.
  */
-#ifndef __DDUNIDLE_H__
-#define __DDUNIDLE_H__
+#ifndef __SKILLS_H__
+#define __SKILLS_H__
 
-#include <stdio.h>
-#include <allegro.h>
+#include "../INCLUDE/DDUNIDLE.H"
 
-#include "STRUCTS.H"
-#include "INVENTRY.H"
-#include "SKILLS.H"
-
-#define NUM_MASTERIES   2
-
-// Levels in the game are 1 to 100.  While the array checks generally 
-// keep this in mind, some checks might try to index out of range if the
-// mastery level is 100.  There's 
-extern unsigned int g_skill_exp_table[100];
-extern unsigned int g_mastery_exp_table[100];
-extern unsigned int g_mastery_exp_to_level_table[100];
-
-extern volatile unsigned int g_skill_timer;
-extern volatile unsigned int g_game_timer;
+void process_proc(Skill *s);
+void initialize_skill(Skill *s);
+void debug_skill(Skill *s);
+void destroy_skill(Skill *s);
 
 #endif

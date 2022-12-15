@@ -18,26 +18,63 @@
    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
    DEALINGS IN THE SOFTWARE.
  */
-#ifndef __DDUNIDLE_H__
-#define __DDUNIDLE_H__
+#ifndef __STRUCTS_H__
+#define __STRUCTS_H__
 
-#include <stdio.h>
-#include <allegro.h>
+#include "ddunidle.h"
 
-#include "STRUCTS.H"
-#include "INVENTRY.H"
-#include "SKILLS.H"
+#define INVENTORY_SIZE 128          // up to 128 items in the player's inventory
 
-#define NUM_MASTERIES   2
+typedef enum {
+    MATERIAL,
+    MELEE_WEAPON,
+    RANGED_WEAPON,
+    HEAD_ARMOR,
+    CHEST_ARMOR,
+    HAND_ARMOR,
+    LEG_ARMOR,
+    FOOT_ARMOR
+} ItemType;
 
-// Levels in the game are 1 to 100.  While the array checks generally 
-// keep this in mind, some checks might try to index out of range if the
-// mastery level is 100.  There's 
-extern unsigned int g_skill_exp_table[100];
-extern unsigned int g_mastery_exp_table[100];
-extern unsigned int g_mastery_exp_to_level_table[100];
+typedef struct {
+    char name[20];
+    int buy_value;
+    int sell_value;
+    ItemType it;
+    int damage;
+    int defense;
+    int bitmap_offset;    
+} Item;
 
-extern volatile unsigned int g_skill_timer;
-extern volatile unsigned int g_game_timer;
+typedef struct {
+    char name[20];
+    int current_level;
+    int current_exp;
+    int minimum_skill_level;
+    int execution_time;
+    int num_prerequisites;
+    int prerequisites[8];
+    unsigned int next_proc;
+    float speed_multiplier;
+} Mastery;
+
+
+typedef struct {
+    char name[20];
+    Mastery *masteries;
+    int current_level;
+    int current_exp;
+    int active_mastery;
+    int is_currently_active;
+    float speed_multiplier;
+} Skill;
+
+
+typedef struct {
+    int item_id;
+    int quantity;
+} InventorySlot;
+
+
 
 #endif
