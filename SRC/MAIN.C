@@ -53,10 +53,12 @@ int main(void) {
     install_int(skill_handler, 100);
     install_int(game_handler, 33);
 
+    load_skills_datafile();
+
     s.masteries[s.active_mastery].next_proc = g_skill_timer + s.masteries[s.active_mastery].execution_time;
 
     next_frame = g_game_timer + 1;
-    while(g_game_timer < 600) {
+    while(g_game_timer < 6) {
         // Update all active skill processing
         process_proc(&s);
         // Update graphics

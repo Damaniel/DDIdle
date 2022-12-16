@@ -26,4 +26,15 @@ For any skill/mastery:
         - Add the experience for this mastery to the skill exp bar
         - If the skill exp >= required XP to next skill level
             - Increment the skill level
-
+            
+## Datafile format:
+ count of skills
+ (for each skill)
+   skill name
+   number of masteries
+   (for each mastery)
+     mastery name
+     minimum skill level
+     execution time in tenths of a second
+     number of prerequesites (n)
+     (n) prerequsities as item IDs

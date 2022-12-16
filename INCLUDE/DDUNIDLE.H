@@ -22,11 +22,13 @@
 #define __DDUNIDLE_H__
 
 #include <stdio.h>
+#include <string.h>
 #include <allegro.h>
 
 #include "STRUCTS.H"
 #include "INVENTRY.H"
 #include "SKILLS.H"
+#include "FILEUTIL.H"
 
 #define NUM_MASTERIES   2
 

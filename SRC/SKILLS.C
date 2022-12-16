@@ -20,6 +20,8 @@
  */
 #include "../INCLUDE/DDUNIDLE.H"
 
+Skill *g_skill_list;
+
 void process_proc(Skill *s) {
     // If the mastery has procced
     //  - increase the mastery exp

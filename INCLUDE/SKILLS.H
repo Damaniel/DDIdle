@@ -28,4 +28,6 @@ void initialize_skill(Skill *s);
 void debug_skill(Skill *s);
 void destroy_skill(Skill *s);
 
+extern Skill *g_skill_list;
+
 #endif
