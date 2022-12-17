@@ -28,13 +28,38 @@ For any skill/mastery:
             - Increment the skill level
             
 ## Datafile format:
- count of skills
- (for each skill)
-   skill name
-   number of masteries
-   (for each mastery)
-     mastery name
-     minimum skill level
-     execution time in tenths of a second
-     number of prerequesites (n)
-     (n) prerequsities as item IDs
+Header:
+2 bytes magic
+1 byte major version
+1 byte minor version
+2 bytes number of skills
+2 bytes number of masteries
+58 bytes of padding
+
+(Skill list as described below)
+Skills:
+2 bytes skill ID
+32 bytes name (0 byte padded for all non-character bytes)
+2 bytes number of masteries in this skill
+16 bytes of padding
+(Mastery list for the skill follows as described below)
+Masteries:
+2 bytes mastery ID
+32 bytes name (0 byte padded for all non-character bytes)
+1 byte minimum skill level
+2 bytes execution time (in tenths of a second)
+2 bytes number of prerequisites
+(number of prerequsites) * 
+    2 bytes - item ID of prerequisiste
+    1 byte - quantity required
+32 bytes of padding
+
+- Skill
+  - Mastery
+  - Mastery
+  - Mastery
+  - Mastery
+- Skill
+  - Mastery
+  - Mastery
+...
