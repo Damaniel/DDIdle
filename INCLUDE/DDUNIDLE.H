@@ -30,6 +30,7 @@
 #include "SKILLS.H"
 #include "FILEUTIL.H"
 
+#define SKILLS_DATA_FILE   "SKILLS.DAT"
 #define NUM_MASTERIES   2
 
 // Levels in the game are 1 to 100.  While the array checks generally 

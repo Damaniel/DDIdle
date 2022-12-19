@@ -27,7 +27,12 @@ void process_proc(Skill *s);
 void initialize_skill(Skill *s);
 void debug_skill(Skill *s);
 void destroy_skill(Skill *s);
+void destroy_masteries(void);
+
+extern int g_num_skills;
+extern int g_num_masteries;
 
 extern Skill *g_skill_list;
+extern Mastery *g_mastery_list;
 
 #endif

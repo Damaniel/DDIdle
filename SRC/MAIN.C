@@ -55,7 +55,6 @@ int main(void) {
 
     load_skills_datafile();
 
-    s.masteries[s.active_mastery].next_proc = g_skill_timer + s.masteries[s.active_mastery].execution_time;
 
     next_frame = g_game_timer + 1;
     while(g_game_timer < 6) {
@@ -70,6 +69,7 @@ int main(void) {
         next_frame = g_game_timer + 1;
     }
 
-    destroy_skill(&s);
+    destroy_masteries(g_matery_list);
+    
     return 0;
 }

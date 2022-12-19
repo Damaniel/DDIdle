@@ -53,6 +53,7 @@ typedef struct {
     int current_exp;
     unsigned char minimum_skill_level;
     short execution_time;
+    short skill_exp;
     short num_prerequisites;
     short prerequisites[8];
     unsigned char prerequisite_quantities[8];

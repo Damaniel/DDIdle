@@ -48,6 +48,7 @@ Masteries:
   32 bytes name (0 byte padded for all non-character bytes)
   1 byte minimum skill level
   2 bytes execution time (in tenths of a second)
+  2 bytes skill XP gained by an action
   2 bytes number of prerequisites
   (number of prerequsites) * 
       2 bytes - item ID of prerequisiste

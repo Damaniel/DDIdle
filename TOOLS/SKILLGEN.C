@@ -24,6 +24,7 @@
    create invalid files.  This tool is mainly just an interactive way for me
    to create a file that's in an easy-to-parse format.
 */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -78,6 +79,68 @@ void init_assigned_mastery_ids(void) {
 }
 
 int load_skill_file(char *filename) {
+    FILE *fp;
+    char buf[80];
+    int i, j;
+
+    fp = fopen(filename, "rb");
+    if (fp == NULL) {
+        printf("Unable to open file!\n");
+        return -1;
+    }
+
+    // Read header
+    buf[0]= fgetc(fp);
+    buf[1] = fgetc(fp);
+    if(buf[0] != 'D' || buf[1] != 'D') {
+        printf("Not a valid data file!\n");
+        return -2;
+    }
+    
+    // Skip version info for now - there's only one version at the moment
+    fgetc(fp);
+    fgetc(fp);
+
+    // Get skill count, mastery count, and pull in the padding just to advance
+    // the file pointer
+    fread(&g_num_skills, sizeof(short), 1, fp);
+    fread(&g_num_masteries, sizeof(short), 1, fp);
+    fread(buf, sizeof(char), 58, fp);
+
+    printf("Number of skills: %d\n", g_num_skills);
+    printf("Number of masteries: %d\n", g_num_masteries);
+
+    // Read skill info
+    for(i=0;i<g_num_skills; i++) {
+        fread(&buf, sizeof(char), 2, fp);        
+        fread(&(g_skill_list[i].s.name), sizeof(char), 32, fp);
+        fread(&(g_num_assigned_masteries[i]), sizeof(short), 1, fp);
+        fread(buf, sizeof(char), 16, fp);
+        for(j=0; j<g_num_assigned_masteries[i]; j++) {
+            fread(&g_assigned_mastery_ids[i][j], sizeof(short), 1, fp);
+        }
+        g_skill_list[i].is_set = 1;
+    }
+
+    // Read mastery info
+    for(i=0; i<g_num_masteries; i++) {
+        fread(&buf, sizeof(char), 2, fp);
+        fread(&(g_mastery_list[i].m.name), sizeof(char), 32, fp);
+        fread(&(g_mastery_list[i].m.minimum_skill_level), sizeof(char), 1, fp);
+        fread(&(g_mastery_list[i].m.execution_time), sizeof(short), 1, fp);
+        fread(&(g_mastery_list[i].m.skill_exp), sizeof(short), 1, fp);
+        fread(&(g_mastery_list[i].m.num_prerequisites), sizeof(short), 1, fp);
+        printf("Number of prerequisites: %d\n", g_mastery_list[i].m.num_prerequisites);
+        for (j=0; j < g_mastery_list[i].m.num_prerequisites; j++) {
+            fread(&(g_mastery_list[i].m.prerequisites[j]), sizeof(short), 1, fp);
+            fread(&(g_mastery_list[i].m.prerequisite_quantities[j]), sizeof(char), 1, fp);
+            //printf("%d  %d\n", g_mastery_list[i].m.prerequisites[j], g_mastery_list[i].m.prerequisite_quantities[j]);
+        }
+        fread(buf, sizeof(char), 32, fp);
+        g_mastery_list[i].is_set = 1;
+    }
+
+    printf("\nFile loaded.\n");
     return 0;
 }
 
@@ -139,10 +202,13 @@ int save_skill_file(char *filename) {
             fwrite(&(g_mastery_list[i].m.minimum_skill_level), sizeof(char), 1, fp);
             // execution time
             fwrite(&(g_mastery_list[i].m.execution_time), sizeof(short), 1, fp);
+            // Skill exp gained
+            fwrite(&(g_mastery_list[i].m.skill_exp), sizeof(short), 1, fp);
             // prerequisite count
             fwrite(&(g_mastery_list[i].m.num_prerequisites), sizeof(short), 1, fp);
             // Prerequisite details (item IDs, counts)
             for(j=0; j< g_mastery_list[i].m.num_prerequisites; j++) {
+                printf("%d %d\n", g_mastery_list[i].m.prerequisites[j], g_mastery_list[i].m.prerequisite_quantities[j]);
                 fwrite(&(g_mastery_list[i].m.prerequisites[j]), sizeof(short), 1, fp);
                 fwrite(&(g_mastery_list[i].m.prerequisite_quantities[j]), sizeof(char), 1, fp);
             }
@@ -341,6 +407,10 @@ void add_mastery(void) {
     printf("How long does one execution take (in tenths of a second)? ");
     fgets(buf, 80, stdin);
     m.execution_time = atoi(buf);
+
+    printf("How much skill experience does this action generate? ");
+    fgets(buf, 80, stdin);
+    m.skill_exp = atoi(buf);
 
     printf("Does this mastery require any prerequisites (Y/N)?");
     fgets(buf, 80, stdin);

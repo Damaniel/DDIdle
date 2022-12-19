@@ -21,6 +21,10 @@
 #include "../INCLUDE/DDUNIDLE.H"
 
 Skill *g_skill_list;
+Mastery *g_mastery_list;
+
+int g_num_masteries;
+int g_num_skills;
 
 void process_proc(Skill *s) {
     // If the mastery has procced
@@ -50,28 +54,6 @@ void process_proc(Skill *s) {
 }
 
 void initialize_skill(Skill *s) {
-    Mastery m;
-
-    // Set up the skill with the test mastery
-    s->masteries = malloc(NUM_MASTERIES * sizeof(Mastery));
-
-    // Create a test mastery
-    m.current_level = 1;
-    m.current_exp = 0;
-    m.execution_time = 15;  
-    s->masteries[0] = m;
-
-    // Create another test mastery
-    m.current_level = 3;
-    m.current_exp = 3;
-    m.execution_time = 25;
-    s->masteries[1] = m;
-
-    // Set some metadata for the skill
-    s->current_exp = 0;
-    s->current_level = 1;
-    s->active_mastery = 0;
-    s->is_currently_active = 1;
 }
 
 void debug_skill(Skill *s) {
@@ -97,5 +79,13 @@ void debug_skill(Skill *s) {
 
 // Deallocate memory used by the skill (mainly just the mastery list)
 void destroy_skill(Skill *s) {
-    free(s->masteries);
+}
+
+void destroy_masteries(Mastery *m) {
+    int i;
+    for (i=0; i < g_num_masteries; i++) {
+        if (g_mastery_list[i] != NULL) {
+            free(g_mastery_list[i]);
+        }
+    }
 }
