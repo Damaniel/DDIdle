@@ -38,28 +38,20 @@ Header:
 
 (Skill list as described below)
 Skills:
-2 bytes skill ID
-32 bytes name (0 byte padded for all non-character bytes)
-2 bytes number of masteries in this skill
-16 bytes of padding
-(Mastery list for the skill follows as described below)
+  2 bytes skill ID
+  32 bytes name (0 byte padded for all non-character bytes)
+  2 bytes number of masteries in this skill
+  16 bytes of padding
+  n * 2 bytes - mastery IDs associated with this skill
 Masteries:
-2 bytes mastery ID
-32 bytes name (0 byte padded for all non-character bytes)
-1 byte minimum skill level
-2 bytes execution time (in tenths of a second)
-2 bytes number of prerequisites
-(number of prerequsites) * 
-    2 bytes - item ID of prerequisiste
-    1 byte - quantity required
-32 bytes of padding
+  2 bytes mastery ID
+  32 bytes name (0 byte padded for all non-character bytes)
+  1 byte minimum skill level
+  2 bytes execution time (in tenths of a second)
+  2 bytes number of prerequisites
+  (number of prerequsites) * 
+      2 bytes - item ID of prerequisiste
+      1 byte - quantity required
+  32 bytes of padding
 
-- Skill
-  - Mastery
-  - Mastery
-  - Mastery
-  - Mastery
-- Skill
-  - Mastery
-  - Mastery
-...
+

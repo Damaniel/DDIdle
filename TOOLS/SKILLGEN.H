@@ -2,22 +2,22 @@
 #define __SKILLGEN_H__
 
 typedef struct {
-    int id;
-    char name[20];
+    short id;
+    char name[32];
     int current_level;
     int current_exp;
-    int minimum_skill_level;
-    int execution_time;
-    int num_prerequisites;
-    int prerequisites[8];
-    int prerequisite_quantities[8];
+    unsigned char minimum_skill_level;
+    short execution_time;
+    short num_prerequisites;
+    short prerequisites[8];
+    unsigned char prerequisite_quantities[8];
     unsigned int next_proc;
     float speed_multiplier;
 } Mastery;
 
 typedef struct {
-    int id;
-    char name[20];
+    short id;
+    char name[32];
     Mastery *masteries;
     int current_level;
     int current_exp;
