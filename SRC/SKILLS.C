@@ -50,11 +50,8 @@ void process_proc(Skill *s) {
                 m->current_level++;
                 printf("Level increase to %d\n", m->current_level);
         }
-        m->next_proc = g_skill_timer + m->execution_time;
+        set_next_proc(m);
     }
-}
-
-void initialize_skill(Skill *s) {
 }
 
 Skill *get_active_skill(void) {
@@ -63,6 +60,10 @@ Skill *get_active_skill(void) {
 
 Mastery *get_active_mastery(Skill *s) {
     return &(g_mastery_list[g_skill_list[g_active_skill].active_mastery]);
+}
+
+void set_next_proc(Mastery *m) {
+    m->next_proc = g_skill_timer + m->execution_time;
 }
 
 void debug_skill(Skill *s) {

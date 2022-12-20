@@ -30,13 +30,15 @@
 #include "SKILLS.H"
 #include "FILEUTIL.H"
 
-// Levels in the game are 1 to 100.  While the array checks generally 
-// keep this in mind, some checks might try to index out of range if the
-// mastery level is 100.  There's 
+/* Levels in the game are 1 to 100.  While the array checks generally 
+ * keep this in mind, some checks might try to index out of range if the
+ * mastery level is 100.
+ */ 
 extern unsigned int g_skill_exp_table[100];
 extern unsigned int g_mastery_exp_table[100];
 extern unsigned int g_mastery_exp_to_level_table[100];
 
+/* Timers used in the main game loop and skill loop interrupt handlers. */
 extern volatile unsigned int g_skill_timer;
 extern volatile unsigned int g_game_timer;
 

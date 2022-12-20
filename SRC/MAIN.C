@@ -63,9 +63,9 @@ int main(void) {
     next_frame = g_game_timer + 1;
     m = get_active_mastery(get_active_skill());
 
-    m->next_proc = g_skill_timer + m->execution_time;
+    set_next_proc(m);
 
-    while(g_game_timer < 600) {
+    while(g_game_timer < 6000) {
         // Update all active skill processing
         process_proc(get_active_skill());
         // Update graphics

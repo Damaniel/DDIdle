@@ -23,20 +23,56 @@
 
 #include "DDUNIDLE.H"
 
+/* process_proc
+ *
+ * Processes a single mastery action.  This also affects the skill in that
+ * mastery actions give the skill experience. 
+ * */
 void process_proc(Skill *s);
-void initialize_skill(Skill *s);
-void debug_skill(Skill *s);
+
+/* destroy_skills
+ *
+ * Frees up the skill list. 
+ */
 void destroy_skills(Skill *s);
+
+/* destroy_masteries
+ *
+ * Frees up the mastery list. 
+ */
 void destroy_masteries(Mastery *m);
+
+/* get_active_mastery 
+ *
+ * a helper function that returns the active mastery for the selected skill.
+ */
 Mastery *get_active_mastery(Skill *s);
+
+/* get_active_skill
+ *
+ * a helper function that returns the active skill.
+ */
 Skill *get_active_skill(void);
 
+/* set_next_proc
+ *
+ * Determine when the mastery should trigger again and sets it.
+ */
+void set_next_proc(Mastery *m);
+
+/* debug_skill 
+ *
+ * Prints out information about the provided skill 
+ */
+void debug_skill(Skill *s);
+
+/* The global skill and mastery lists */
 extern int g_num_skills;
 extern int g_num_masteries;
-
 extern Skill *g_skill_list;
 extern Mastery *g_mastery_list;
 
+/* The ID of the currently active skill */
 extern int g_active_skill;
 
 #endif
