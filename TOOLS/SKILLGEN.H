@@ -19,7 +19,7 @@ typedef struct {
 typedef struct {
     short id;
     char name[32];
-    Mastery *masteries;
+    short max_masteries_per_skill[50];
     int current_level;
     int current_exp;
     int active_mastery;

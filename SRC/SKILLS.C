@@ -25,6 +25,7 @@ Mastery *g_mastery_list;
 
 int g_num_masteries;
 int g_num_skills;
+int g_active_skill;
 
 void process_proc(Skill *s) {
     // If the mastery has procced
@@ -35,7 +36,7 @@ void process_proc(Skill *s) {
     //  - If skill exp is enough for the next level
     //    - Increase skill level
     //  - reset the proc counter
-    Mastery *m = &(s->masteries[s->active_mastery]);
+    Mastery *m = &(g_mastery_list[s->active_mastery]);
 
     if (!s->is_currently_active) {
         printf("Current skill is inactive!\n");
@@ -56,17 +57,26 @@ void process_proc(Skill *s) {
 void initialize_skill(Skill *s) {
 }
 
+Skill *get_active_skill(void) {
+    return &(g_skill_list[g_active_skill]);
+}
+
+Mastery *get_active_mastery(Skill *s) {
+    return &(g_mastery_list[g_skill_list[g_active_skill].active_mastery]);
+}
+
 void debug_skill(Skill *s) {
     int i;
 
-    for(i=0; i<NUM_MASTERIES; i++) {
-        printf("Mastery %d\n", i+i);
+    for(i=0; i<s->num_masteries; i++) {
+        printf("Mastery %d\n", (i+1));
         if(s->active_mastery == i) {
             printf("  * This mastery is the active one! *\n");
         }
-        printf("  - Current level: %d\n", s->masteries[i].current_level);
-        printf("  - current exp: %d\n", s->masteries[i].current_exp);
-        printf("  - time per action: %d\n", s->masteries[i].execution_time);
+
+        printf("  - Current level: %d\n", g_mastery_list[s->masteries[i]].current_level);
+        printf("  - current exp: %d\n", g_mastery_list[s->masteries[i]].current_exp);
+        printf("  - time per action: %d\n", g_mastery_list[s->masteries[i]].execution_time);
     }
 
     if(s->is_currently_active) {
@@ -78,14 +88,14 @@ void debug_skill(Skill *s) {
 }
 
 // Deallocate memory used by the skill (mainly just the mastery list)
-void destroy_skill(Skill *s) {
+void destroy_skills(Skill *s) {
+    if (s != NULL) {
+        free(s);
+    }
 }
 
 void destroy_masteries(Mastery *m) {
-    int i;
-    for (i=0; i < g_num_masteries; i++) {
-        if (g_mastery_list[i] != NULL) {
-            free(g_mastery_list[i]);
-        }
+    if (m != NULL) {
+        free(m);
     }
 }

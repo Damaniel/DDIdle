@@ -21,18 +21,22 @@
 #ifndef __SKILLS_H__
 #define __SKILLS_H__
 
-#include "../INCLUDE/DDUNIDLE.H"
+#include "DDUNIDLE.H"
 
 void process_proc(Skill *s);
 void initialize_skill(Skill *s);
 void debug_skill(Skill *s);
-void destroy_skill(Skill *s);
-void destroy_masteries(void);
+void destroy_skills(Skill *s);
+void destroy_masteries(Mastery *m);
+Mastery *get_active_mastery(Skill *s);
+Skill *get_active_skill(void);
 
 extern int g_num_skills;
 extern int g_num_masteries;
 
 extern Skill *g_skill_list;
 extern Mastery *g_mastery_list;
+
+extern int g_active_skill;
 
 #endif

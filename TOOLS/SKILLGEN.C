@@ -112,7 +112,7 @@ int load_skill_file(char *filename) {
 
     // Read skill info
     for(i=0;i<g_num_skills; i++) {
-        fread(&buf, sizeof(char), 2, fp);        
+        fread(buf, sizeof(char), 2, fp);        
         fread(&(g_skill_list[i].s.name), sizeof(char), 32, fp);
         fread(&(g_num_assigned_masteries[i]), sizeof(short), 1, fp);
         fread(buf, sizeof(char), 16, fp);
@@ -124,7 +124,7 @@ int load_skill_file(char *filename) {
 
     // Read mastery info
     for(i=0; i<g_num_masteries; i++) {
-        fread(&buf, sizeof(char), 2, fp);
+        fread(buf, sizeof(char), 2, fp);
         fread(&(g_mastery_list[i].m.name), sizeof(char), 32, fp);
         fread(&(g_mastery_list[i].m.minimum_skill_level), sizeof(char), 1, fp);
         fread(&(g_mastery_list[i].m.execution_time), sizeof(short), 1, fp);

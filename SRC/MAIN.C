@@ -34,16 +34,14 @@ void game_handler(void) {
 END_OF_FUNCTION(game_handler);
 
 int main(void) {
-    Skill s;
     unsigned int next_frame;
+    int result;
+    Mastery *m;
 
     LOCK_VARIABLE(g_game_timer);
     LOCK_VARIABLE(g_skill_timer);
     LOCK_FUNCTION(game_handler);
     LOCK_FUNCTION(skill_handler);
-
-    initialize_skill(&s);
-    debug_skill(&s);
 
     g_skill_timer = 0;
     g_game_timer = 0;
@@ -53,13 +51,23 @@ int main(void) {
     install_int(skill_handler, 100);
     install_int(game_handler, 33);
 
-    load_skills_datafile();
+    result = load_skills_datafile();
+    if (result != 0) {
+        printf("File open error!\n");
+        exit(1);
+    }
+    g_active_skill = 0;
 
+    debug_skill(get_active_skill());
 
     next_frame = g_game_timer + 1;
-    while(g_game_timer < 6) {
+    m = get_active_mastery(get_active_skill());
+
+    m->next_proc = g_skill_timer + m->execution_time;
+
+    while(g_game_timer < 600) {
         // Update all active skill processing
-        process_proc(&s);
+        process_proc(get_active_skill());
         // Update graphics
 
         // Wait until the next frame flips over
@@ -69,7 +77,8 @@ int main(void) {
         next_frame = g_game_timer + 1;
     }
 
-    destroy_masteries(g_matery_list);
-    
+    destroy_skills(g_skill_list);
+    destroy_masteries(g_mastery_list);
+
     return 0;
 }

@@ -21,80 +21,87 @@
 #include "../INCLUDE/DDUNIDLE.H"
 
 int load_skills_datafile(void) {
-
     FILE *fp;
-    int skill_count, mastery_count, char_count;
-    int i, j, k;
     char buf[80];
+    int i, j;
 
-    fp = fopen("skills.dat", "r");
+    fp = fopen(SKILLS_DATA_FILE, "rb");
     if (fp == NULL) {
+        printf("Unable to open file!\n");
         return -1;
     }
 
-    fscanf(fp, "%d\n", &skill_count);
+    // Read header
+    buf[0]= fgetc(fp);
+    buf[1] = fgetc(fp);
+    if(buf[0] != 'D' || buf[1] != 'D') {
+        printf("Not a valid data file!\n");
+        return -2;
+    }
+    
+    // Skip version info for now - there's only one version at the moment
+    fgetc(fp);
+    fgetc(fp);
 
-    g_skill_list = malloc(skill_count * sizeof(Skill));
-    if (g_skill_list == NULL) {
-        printf("No memory to allocate skills!\n");
-        fclose(fp);
+    // Get skill count, mastery count, and pull in the padding just to advance
+    // the file pointer
+    fread(&g_num_skills, sizeof(short), 1, fp);
+    fread(&g_num_masteries, sizeof(short), 1, fp);
+    fread(buf, sizeof(char), 58, fp);
+
+    printf("Number of skills: %d\n", g_num_skills);
+    printf("Number of masteries: %d\n", g_num_masteries);
+
+    g_skill_list = malloc(g_num_skills * sizeof(Skill));
+    if(g_skill_list == NULL) {
+        printf("Unable to allocate skill memory!\n");
+        return -1;
+    }
+    
+    g_mastery_list = malloc(g_num_masteries * sizeof(Mastery));
+    if (g_mastery_list == NULL) {
+        printf("Unable to allocate mastery memory!\n");
         return -1;
     }
 
-    for(i=0; i<skill_count; i++) {
-        // Set skill defaults
+    // Read skill info
+    printf("Processing skills...\n");
+    for(i=0;i<g_num_skills; i++) {
+        fread(buf, sizeof(char), 2, fp);        
+        fread(&(g_skill_list[i].name), sizeof(char), 32, fp);
+        fread(&(g_skill_list[i].num_masteries), sizeof(short), 1, fp);
+        fread(buf, sizeof(char), 16, fp);
+        for(j=0; j<g_skill_list[i].num_masteries; j++) {
+            fread(&(g_skill_list[i].masteries[j]), sizeof(short), 1, fp);
+        }
+        // Init the rest of the skill data (it will eventually be loaded from
+        // a progress file)
+        g_skill_list[i].active_mastery = 0;
         g_skill_list[i].current_exp = 0;
         g_skill_list[i].current_level = 1;
-        g_skill_list[i].is_currently_active = 0;
         g_skill_list[i].speed_multiplier = 1.0;
-        g_skill_list[i].active_mastery = 0;
-        // read in the rest
-        fscanf(fp, "%d\n", &char_count);
-        fgets(buf, 80, fp);
-        strncpy(g_skill_list[i].name, buf, char_count);
-        g_skill_list[i].name[char_count] = '\0';
-        fscanf(fp, "%d\n", &mastery_count);
-        g_skill_list[i].masteries = malloc(mastery_count * sizeof(Mastery));
-        printf("Skill: %s\n", g_skill_list[i].name);
-        printf("-----------------------\n");
-        if (g_skill_list[i].masteries == NULL) {
-            printf("No memory to allocate masteries!\n");
-            fclose(fp);
-            return -1;
-        } 
-        for(j=0; j<mastery_count; j++) {
-            // Set mastery defaults
-            g_skill_list[i].masteries[j].current_exp = 0;
-            g_skill_list[i].masteries[j].current_level = 1;
-            g_skill_list[i].masteries[j].speed_multiplier = 1.0;
-            // read in the rest
-            fscanf(fp, "%d\n", &char_count);
-            fgets(buf, 80, fp);
-            strncpy(g_skill_list[i].masteries[j].name, buf, char_count);
-            g_skill_list[i].masteries[j].name[char_count] = '\0';            
-            fscanf(fp, "%d\n", &(g_skill_list[i].masteries[j].minimum_skill_level));
-            fscanf(fp, "%d\n", &(g_skill_list[i].masteries[j].execution_time));
-            fscanf(fp, "%d\n", &(g_skill_list[i].masteries[j].num_prerequisites));
-            if(g_skill_list[i].masteries[j].num_prerequisites > 0) {
-                for(k=0; k < g_skill_list[i].masteries[j].num_prerequisites; k++) {
-                    fscanf(fp, "%d\n", &(g_skill_list[i].masteries[j].prerequisites[k]));
-                }
-            }
-            printf("Mastery name: %s\n", g_skill_list[i].masteries[j].name);
-            printf(" - Minimum skill level: %d\n", g_skill_list[i].masteries[j].minimum_skill_level);
-            printf(" - Execution time: %d ticks\n", g_skill_list[i].masteries[j].execution_time);
-            printf(" - Number of item prerequisites: %d\n", g_skill_list[i].masteries[j].num_prerequisites);
-            if( g_skill_list[i].masteries[j].num_prerequisites > 0) {
-                printf( " - Item IDs of prerequisites: ");
-                for (k = 0; k < g_skill_list[i].masteries[j].num_prerequisites; k++) {
-                    printf("%d ", g_skill_list[i].masteries[j].prerequisites[k]);
-                }
-                printf("\n");
-            }
-        }
-
     }
-    fclose(fp);
+
+    // Read mastery info
+    printf("Processing masteries...\n");
+    for(i=0; i<g_num_masteries; i++) {
+        fread(buf, sizeof(char), 2, fp);
+        fread(&(g_mastery_list[i].name), sizeof(char), 32, fp);
+        fread(&(g_mastery_list[i].minimum_skill_level), sizeof(char), 1, fp);
+        fread(&(g_mastery_list[i].execution_time), sizeof(short), 1, fp);
+        fread(&(g_mastery_list[i].skill_exp), sizeof(short), 1, fp);
+        fread(&(g_mastery_list[i].num_prerequisites), sizeof(short), 1, fp);
+        for (j=0; j < g_mastery_list[i].num_prerequisites; j++) {
+            fread(&(g_mastery_list[i].prerequisites[j]), sizeof(short), 1, fp);
+            fread(&(g_mastery_list[i].prerequisite_quantities[j]), sizeof(char), 1, fp);
+        }
+        fread(buf, sizeof(char), 32, fp);
+        // Init the rest of ths skill data (it will eventually be loaded from
+        // a progress file)
+        g_mastery_list[i].current_level = 1;
+        g_mastery_list[i].current_exp = 0;
+        g_mastery_list[i].speed_multiplier = 1.0;
+    }
     return 0;
 }
 

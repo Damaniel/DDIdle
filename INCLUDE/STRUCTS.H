@@ -21,9 +21,14 @@
 #ifndef __STRUCTS_H__
 #define __STRUCTS_H__
 
-#include "ddunidle.h"
+#include "DDUNIDLE.H"
 
 #define INVENTORY_SIZE 128          // up to 128 items in the player's inventory
+
+// Information about the skills and masteries data.
+#define SKILLS_DATA_FILE   "SKILLS.DAT"
+#define MAX_SKILLS    100
+#define MAX_MASTERIES_PER_SKILL   50
 
 typedef enum {
     MATERIAL,
@@ -65,7 +70,8 @@ typedef struct {
 typedef struct {
     short id;
     char name[32];
-    Mastery *masteries;
+    short num_masteries;
+    short masteries[MAX_MASTERIES_PER_SKILL];
     int current_level;
     int current_exp;
     int active_mastery;
@@ -78,7 +84,5 @@ typedef struct {
     int item_id;
     int quantity;
 } InventorySlot;
-
-
 
 #endif
