@@ -65,7 +65,7 @@ int main(void) {
 
     set_next_proc(m);
 
-    while(g_game_timer < 6000) {
+    while(g_game_timer < 600) {
         // Update all active skill processing
         process_proc(get_active_skill());
         // Update graphics
@@ -77,6 +77,7 @@ int main(void) {
         next_frame = g_game_timer + 1;
     }
 
+    printf("%s\n", g_item_list[1].name);
     destroy_skills(g_skill_list);
     destroy_masteries(g_mastery_list);
 

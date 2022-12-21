@@ -36,7 +36,7 @@ void process_proc(Skill *s) {
     //  - If skill exp is enough for the next level
     //    - Increase skill level
     //  - reset the proc counter
-    Mastery *m = &(g_mastery_list[s->active_mastery]);
+    Mastery *m = get_active_mastery(s);;
 
     if (!s->is_currently_active) {
         printf("Current skill is inactive!\n");
@@ -45,10 +45,15 @@ void process_proc(Skill *s) {
 
     if (g_skill_timer >= m->next_proc) {
         m->current_exp++;
-        printf("Mastery proc count - %d\n", m->current_exp);
+        printf("%s mastery proc count - %d\n", m->name, m->current_exp);
         if(m->current_level < 100 && m->current_exp >= g_mastery_exp_table[m->current_level]) {
                 m->current_level++;
-                printf("Level increase to %d\n", m->current_level);
+                printf("Mastery %s level increased to %d\n", m->name, m->current_level);
+        }
+        s->current_exp += m->skill_exp;
+        if(s->current_level < 100 && s->current_exp >= g_skill_exp_table[s->current_level]) {
+                s->current_level++;
+                printf("%s skill level increased to %d\n", s->name, s->current_level);
         }
         set_next_proc(m);
     }

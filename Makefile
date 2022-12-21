@@ -8,8 +8,8 @@ all: ddunidle
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-ddunidle: src/main.o src/exptable.o src/skills.o src/fileutil.o
-	$(CC) -o ddunidle.exe src/main.o src/exptable.o src/skills.o src/fileutil.o $(LIBS)
+ddunidle: src/main.o src/exptable.o src/skills.o src/fileutil.o src/items.o
+	$(CC) -o ddunidle.exe src/main.o src/exptable.o src/skills.o src/fileutil.o src/items.o $(LIBS)
 
 prod: ddunidle
 	strip ddunidle.exe

@@ -42,4 +42,7 @@ extern unsigned int g_mastery_exp_to_level_table[100];
 extern volatile unsigned int g_skill_timer;
 extern volatile unsigned int g_game_timer;
 
+/* The master item list */
+extern Item g_item_list[];
+
 #endif
