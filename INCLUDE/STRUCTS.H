@@ -28,13 +28,12 @@
 // inventory - 128 x 8 = 1k
 // Drop table - 50 * ((8 * 20) + 12) = 8.6k;
 // item list - ~1000 * 64 = 64k
-// Skill list - 140 * 20 = 2.8k
-// Mastery list - (20 * 40 * 85)  = 68k
+// Skill list - 20 * 140 = 2.8k
+// Mastery list - (<skills>*<skills/mastery> * 85)
+//   Roughly (20 * 15(avg) * 85) = 25.5k
 //
-// Total list size (so far): 145k
+// Estimated list size (so far): ~102k
 // The goal is to keep all lists below 512k in combined size.
-// (This may require lots of dynamic memory allocation at some point, since
-// most of the fixed memory amounts above will likely go unused)
 
 #define INVENTORY_SIZE 128          // up to 128 items in the player's inventory
 
@@ -97,6 +96,9 @@ typedef struct {
     short num_prerequisites;
     short prerequisites[8];
     unsigned char prerequisite_quantities[8];
+    // each mastery produces either a normal item or a special item
+    int product_item_id;
+    int special_item_id;
     unsigned int next_proc;
     float speed_multiplier;
 } Mastery;
@@ -121,3 +123,4 @@ typedef struct {
 } InventorySlot;
 
 #endif
+

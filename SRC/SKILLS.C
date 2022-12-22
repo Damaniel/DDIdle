@@ -20,8 +20,8 @@
  */
 #include "../INCLUDE/DDUNIDLE.H"
 
-Skill *g_skill_list;
-Mastery *g_mastery_list;
+//Skill *g_skill_list;
+//Mastery *g_mastery_list;
 
 int g_num_masteries;
 int g_num_skills;

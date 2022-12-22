@@ -58,6 +58,11 @@ int main(void) {
     }
     g_active_skill = 0;
 
+    printf("%s %d\n", g_mastery_list[0].name, g_mastery_list[0].minimum_skill_level);
+    g_mastery_list[0].minimum_skill_level = 10;
+    printf("%s %d\n", g_mastery_list[0].name, g_mastery_list[0].minimum_skill_level);
+    exit(0);
+    
     debug_skill(get_active_skill());
 
     next_frame = g_game_timer + 1;

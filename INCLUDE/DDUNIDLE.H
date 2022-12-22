@@ -44,5 +44,9 @@ extern volatile unsigned int g_game_timer;
 
 /* The master item list */
 extern Item g_item_list[];
+extern DropTable g_drop_table[];
+
+extern Mastery g_mastery_list[];
+extern Skill g_skill_list[];
 
 #endif

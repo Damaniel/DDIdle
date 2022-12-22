@@ -69,8 +69,8 @@ void debug_skill(Skill *s);
 /* The global skill and mastery lists */
 extern int g_num_skills;
 extern int g_num_masteries;
-extern Skill *g_skill_list;
-extern Mastery *g_mastery_list;
+//extern Skill *g_skill_list;
+//extern Mastery *g_mastery_list;
 
 /* The ID of the currently active skill */
 extern int g_active_skill;
