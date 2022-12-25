@@ -36,7 +36,7 @@ void process_proc(Skill *s) {
     //  - If skill exp is enough for the next level
     //    - Increase skill level
     //  - reset the proc counter
-    Mastery *m = get_active_mastery(s);;
+    Mastery *m = get_active_mastery(s);
 
     if (!s->is_currently_active) {
         printf("Current skill is inactive!\n");
@@ -64,7 +64,21 @@ Skill *get_active_skill(void) {
 }
 
 Mastery *get_active_mastery(Skill *s) {
-    return &(g_mastery_list[g_skill_list[g_active_skill].active_mastery]);
+    return &(g_mastery_list[s->active_mastery]);
+}
+
+void set_active_mastery(Skill *s, int mastery_id) {
+    s->active_mastery = mastery_id;
+}
+
+void activate_skill(Skill *s) {
+    s->is_currently_active = 1;
+    set_next_proc(get_active_mastery(s));
+}
+
+void deactivate_skill (Skill *s) {
+    s->is_currently_active = 0;
+
 }
 
 void set_next_proc(Mastery *m) {
@@ -90,18 +104,5 @@ void debug_skill(Skill *s) {
     }
     else {
         printf("This skill is NOT currently being worked on!\n");
-    }
-}
-
-// Deallocate memory used by the skill (mainly just the mastery list)
-void destroy_skills(Skill *s) {
-    if (s != NULL) {
-        free(s);
-    }
-}
-
-void destroy_masteries(Mastery *m) {
-    if (m != NULL) {
-        free(m);
     }
 }

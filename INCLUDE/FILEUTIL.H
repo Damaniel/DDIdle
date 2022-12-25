@@ -3,6 +3,4 @@
 
 #include "DDUNIDLE.H"
 
-int load_skills_datafile(void);
-
 #endif

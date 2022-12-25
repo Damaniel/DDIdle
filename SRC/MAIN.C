@@ -35,8 +35,6 @@ END_OF_FUNCTION(game_handler);
 
 int main(void) {
     unsigned int next_frame;
-    int result;
-    Mastery *m;
 
     LOCK_VARIABLE(g_game_timer);
     LOCK_VARIABLE(g_skill_timer);
@@ -51,24 +49,11 @@ int main(void) {
     install_int(skill_handler, 100);
     install_int(game_handler, 33);
 
-    result = load_skills_datafile();
-    if (result != 0) {
-        printf("File open error!\n");
-        exit(1);
-    }
-    g_active_skill = 0;
-
-    printf("%s %d\n", g_mastery_list[0].name, g_mastery_list[0].minimum_skill_level);
-    g_mastery_list[0].minimum_skill_level = 10;
-    printf("%s %d\n", g_mastery_list[0].name, g_mastery_list[0].minimum_skill_level);
-    exit(0);
-    
-    debug_skill(get_active_skill());
+    g_active_skill = 1;
+    set_active_mastery(get_active_skill(), 1);
+    activate_skill(get_active_skill());
 
     next_frame = g_game_timer + 1;
-    m = get_active_mastery(get_active_skill());
-
-    set_next_proc(m);
 
     while(g_game_timer < 600) {
         // Update all active skill processing
@@ -81,10 +66,6 @@ int main(void) {
         }
         next_frame = g_game_timer + 1;
     }
-
-    printf("%s\n", g_item_list[1].name);
-    destroy_skills(g_skill_list);
-    destroy_masteries(g_mastery_list);
 
     return 0;
 }

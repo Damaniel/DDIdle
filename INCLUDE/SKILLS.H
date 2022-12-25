@@ -30,18 +30,6 @@
  * */
 void process_proc(Skill *s);
 
-/* destroy_skills
- *
- * Frees up the skill list. 
- */
-void destroy_skills(Skill *s);
-
-/* destroy_masteries
- *
- * Frees up the mastery list. 
- */
-void destroy_masteries(Mastery *m);
-
 /* get_active_mastery 
  *
  * a helper function that returns the active mastery for the selected skill.
@@ -65,6 +53,10 @@ void set_next_proc(Mastery *m);
  * Prints out information about the provided skill 
  */
 void debug_skill(Skill *s);
+
+void set_active_mastery(Skill *s, int mastery_id);
+void activate_skill(Skill *s);
+void deactivate_skill(Skill *s);
 
 /* The global skill and mastery lists */
 extern int g_num_skills;
