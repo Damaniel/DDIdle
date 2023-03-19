@@ -23,7 +23,20 @@
 
 #include "ddunidle.h"
 
-extern InventorySlot iventory[INVENTORY_SIZE];
+extern InventorySlot g_inventory[INVENTORY_SIZE];
+
+// Adds an item to the inventory (either by stacking it with an existing item of that
+// type in an inventory slot, or in an empty slot of no item of the kind exists)
+int add_item_to_inventory(int item_id);
+
+// Puts the specified item in the specified slot
+int add_item(int item_id, int item_index);
+
+// Clears the entire inventory
+void init_inventory(void);
+
+// Clears a single inventory item
+void init_inventory_item(int index);
 
 // Gets the slot in the inventory containing the specified item, or -1 if there
 // are no items of that type in the inventory

@@ -49,9 +49,13 @@ int main(void) {
     install_int(skill_handler, 100);
     install_int(game_handler, 33);
 
-    g_active_skill = 1;
+    g_active_skill = 0;
     set_active_mastery(get_active_skill(), 1);
     activate_skill(get_active_skill());
+
+    printf("--- Test start ----\n");
+    printf("  - Active skill is %s\n", get_skill_name(get_active_skill()));
+    printf("  - ACtive mastery is %s\n", get_mastery_name(get_active_mastery(get_active_skill())));
 
     next_frame = g_game_timer + 1;
 

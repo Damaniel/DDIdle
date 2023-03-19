@@ -29,6 +29,7 @@
 #include "INVENTRY.H"
 #include "SKILLS.H"
 #include "FILEUTIL.H"
+#include "ITEMS.H"
 
 /* Levels in the game are 1 to 100.  While the array checks generally 
  * keep this in mind, some checks might try to index out of range if the
@@ -48,5 +49,8 @@ extern DropTable g_drop_table[];
 
 extern Mastery g_mastery_list[];
 extern Skill g_skill_list[];
+
+/* Some defines */
+#define EMPTY_SLOT  0
 
 #endif

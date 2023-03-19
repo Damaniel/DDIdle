@@ -54,6 +54,18 @@ void set_next_proc(Mastery *m);
  */
 void debug_skill(Skill *s);
 
+/* get_skill_name
+ * 
+ * Returns a string that contains the name of the specified skill 
+ */
+char *get_skill_name(Skill *s);
+
+/* get_mastery_name 
+ *
+ * Returns a string that contains the name of the specified mastery
+ */
+char *get_mastery_name(Mastery *m);
+
 void set_active_mastery(Skill *s, int mastery_id);
 void activate_skill(Skill *s);
 void deactivate_skill(Skill *s);
