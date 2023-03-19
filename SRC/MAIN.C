@@ -46,7 +46,9 @@ int main(void) {
 
     allegro_init();
     install_timer();
+    // Skill procs are measured in tenths of a second
     install_int(skill_handler, 100);
+    // The other game logic (graphics, etc) updates 30 times per second
     install_int(game_handler, 33);
 
     g_active_skill = 0;
@@ -55,13 +57,14 @@ int main(void) {
 
     printf("--- Test start ----\n");
     printf("  - Active skill is %s\n", get_skill_name(get_active_skill()));
-    printf("  - ACtive mastery is %s\n", get_mastery_name(get_active_mastery(get_active_skill())));
+    printf("  - Active mastery is %s\n", get_mastery_name(get_active_mastery(get_active_skill())));
 
     next_frame = g_game_timer + 1;
 
     while(g_game_timer < 600) {
         // Update all active skill processing
         process_proc(get_active_skill());
+
         // Update graphics
 
         // Wait until the next frame flips over

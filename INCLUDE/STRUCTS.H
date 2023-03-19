@@ -38,7 +38,6 @@
 #define INVENTORY_SIZE 128          // up to 128 items in the player's inventory
 
 // Information about the skills and masteries data.
-#define SKILLS_DATA_FILE   "SKILLS.DAT"
 #define MAX_SKILLS    20
 #define MAX_MASTERIES_PER_SKILL   40
 #define MAX_DROP_TABLE_ITEMS     20

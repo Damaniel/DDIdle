@@ -27,32 +27,10 @@ For any skill/mastery:
         - If the skill exp >= required XP to next skill level
             - Increment the skill level
             
-## Datafile format:
-Header:
-2 bytes magic
-1 byte major version
-1 byte minor version
-2 bytes number of skills
-2 bytes number of masteries
-58 bytes of padding
 
-(Skill list as described below)
-Skills:
-  2 bytes skill ID
-  32 bytes name (0 byte padded for all non-character bytes)
-  2 bytes number of masteries in this skill
-  16 bytes of padding
-  n * 2 bytes - mastery IDs associated with this skill
-Masteries:
-  2 bytes mastery ID
-  32 bytes name (0 byte padded for all non-character bytes)
-  1 byte minimum skill level
-  2 bytes execution time (in tenths of a second)
-  2 bytes skill XP gained by an action
-  2 bytes number of prerequisites
-  (number of prerequsites) * 
-      2 bytes - item ID of prerequisiste
-      1 byte - quantity required
-  32 bytes of padding
-
-
+## Things to work on next
+- Function to convert current skill timer to percentage complete for the current mastery
+- Function to convert skill exp to percentage of next level for the specified skill
+    - Requires that all skill exp tables are up to date
+- Function to convert mastery exp to percentage of next level for the specified mastery
+    - Requires that all mastery exp tables are up to date
