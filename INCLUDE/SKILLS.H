@@ -70,13 +70,19 @@ void set_active_mastery(Skill *s, int mastery_id);
 void activate_skill(Skill *s);
 void deactivate_skill(Skill *s);
 
+float get_action_progress(unsigned int execution_time, unsigned int timer, unsigned int proc);
+float get_mastery_progress(unsigned int cur_exp, unsigned int mastery_level);
+float get_skill_progress(unsigned int cur_exp, unsigned int skill_level);
+
 /* The global skill and mastery lists */
 extern int g_num_skills;
 extern int g_num_masteries;
-//extern Skill *g_skill_list;
-//extern Mastery *g_mastery_list;
 
 /* The ID of the currently active skill */
 extern int g_active_skill;
+
+extern float g_action_progress;
+extern float g_mastery_progress;
+extern float g_skill_progress;
 
 #endif

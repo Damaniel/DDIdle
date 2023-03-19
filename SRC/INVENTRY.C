@@ -19,29 +19,29 @@ void init_inventory_item(int index) {
 int add_item_to_inventory(int item_id) {
     int item_index;
 
-    printf("  - Request to add item (%s)\n", get_item_name(item_id));
+    // printf("  - Request to add item (%s)\n", get_item_name(item_id));
     item_index = get_inventory_slot_of_item(item_id);
     if (item_index == -1) {
         item_index = get_first_free_inventory_spot();
         if (item_index == -1) {
             // Inventory is full - we can't add another item
-            printf("    Can't add the item - inventory is full!\n");
+            // printf("    Can't add the item - inventory is full!\n");
             return -1;
         }
-        printf("    Item doesn't yet exist in the inventory!  Adding to slot %d\n", item_index);
+        // printf("    Item doesn't yet exist in the inventory!  Adding to slot %d\n", item_index);
     }
     return add_item(item_id, item_index);
 }
 
 int add_item(int item_id, int item_index) {
-    printf("  - Add item %s to inventory at slot %d...\n", get_item_name(item_id), item_index);
+    // printf("  - Add item %s to inventory at slot %d...\n", get_item_name(item_id), item_index);
     if (item_id < 0 || item_id >= INVENTORY_SIZE) {
-        printf("     Inventory slot is out of range!\n");
+        // printf("     Inventory slot is out of range!\n");
         return -1;
     }
     g_inventory[item_index].item_id = item_id;
     ++(g_inventory[item_index].quantity);
-    printf("    There are now %d items in that slot\n", g_inventory[item_index].quantity);
+    // printf("    There are now %d items in that slot\n", g_inventory[item_index].quantity);
     return 0;
 }
 
@@ -68,7 +68,7 @@ int get_inventory_free_space(void) {
             free_count++;
         }
     }
-    printf("  - Number of free slots is %d\n", free_count);
+    // printf("  - Number of free slots is %d\n", free_count);
     return free_count;
 }
 
@@ -79,10 +79,10 @@ int get_first_free_inventory_spot(void) {
     
     for(i=0; i < INVENTORY_SIZE; i++ ) {
         if (g_inventory[i].item_id == EMPTY_SLOT) { 
-            printf("  - First free inventory slot is %d\n", i);
+            // printf("  - First free inventory slot is %d\n", i);
             return i;
         }
     }
-    printf("  - No free inventory slots!\n");
+    // printf("  - No free inventory slots!\n");
     return -1;
 }

@@ -20,12 +20,13 @@
  */
 #include "../INCLUDE/DDUNIDLE.H"
 
-//Skill *g_skill_list;
-//Mastery *g_mastery_list;
-
 int g_num_masteries;
 int g_num_skills;
 int g_active_skill;
+
+float g_action_progress;
+float g_mastery_progress;
+float g_skill_progress;
 
 void process_proc(Skill *s) {
     // If the mastery has procced
@@ -44,16 +45,24 @@ void process_proc(Skill *s) {
         return;
     }
 
+    // Update the action progress percentage (for the progress bar)
+    g_action_progress = get_action_progress(m->execution_time, g_skill_timer, m->next_proc);
+    
     if (g_skill_timer >= m->next_proc) {
         m->current_exp++;
-        printf("%s mastery proc count - %d\n", m->name, m->current_exp);
         // Attempt to add the item to the player's inventory (if room exists)
         add_item_to_inventory(m->product_item_id);
+        // Update the mastery progress percentage (for progress bar)
+        g_mastery_progress = get_mastery_progress(m->current_exp, m->current_level);
+        // Update the mastery level if necessary
         if(m->current_level < 100 && m->current_exp >= g_mastery_exp_table[m->current_level]) {
                 m->current_level++;
                 printf("Mastery %s level increased to %d\n", m->name, m->current_level);
         }
         s->current_exp += m->skill_exp;
+        g_skill_progress = get_skill_progress(s->current_exp, s->current_level);
+        printf("Skill progress = %.2f\n", g_skill_progress);
+        // Update the skill level if necessary
         if(s->current_level < 100 && s->current_exp >= g_skill_exp_table[s->current_level]) {
                 s->current_level++;
                 printf("%s skill level increased to %d\n", s->name, s->current_level);
@@ -115,4 +124,39 @@ void debug_skill(Skill *s) {
     else {
         printf("This skill is NOT currently being worked on!\n");
     }
+}
+
+// Calculates how far along the current action we are
+float get_action_progress(unsigned int execution_time, unsigned int timer, unsigned int proc) {
+    unsigned int start_time = proc - execution_time;
+    unsigned int progress = timer - start_time;
+    return (float)((float)progress/execution_time);
+}
+
+// Calculates how far along the mastery we are.  
+// This is defined as the percentage of the way from the start of the current mastery level to the 
+// previous level
+//
+// Example:
+// For coal, assume we're level 8 with 31 experience.  Level 9 requires 36 experience, with a 
+// experience delta of 7.  The previous level required 29 experience, so we have 2 out of 7 experience
+// required for the next level. 
+//
+// We need to know the current level and the current experience
+// Note that the current mastery level is mastery_level - 1
+float get_mastery_progress(unsigned int cur_exp, unsigned int mastery_level) {
+    int progress_exp = cur_exp - g_mastery_exp_table[mastery_level-1];
+    int req_exp = g_mastery_exp_to_level_table[mastery_level];
+    return (float)((float)progress_exp/req_exp);
+}
+
+float get_skill_progress(unsigned int cur_exp, unsigned int skill_level) {
+    float progress;
+    int progress_exp = cur_exp - g_skill_exp_table[skill_level-1];
+    int req_exp = g_skill_exp_to_level_table[skill_level];
+    progress = (float)((float)progress_exp/req_exp);
+    if (progress > 1.0f) {
+        progress = 1.0f;
+    } 
+    return progress;
 }

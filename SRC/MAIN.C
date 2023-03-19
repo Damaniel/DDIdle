@@ -61,7 +61,7 @@ int main(void) {
 
     next_frame = g_game_timer + 1;
 
-    while(g_game_timer < 600) {
+    while(g_game_timer < 1200) {
         // Update all active skill processing
         process_proc(get_active_skill());
 

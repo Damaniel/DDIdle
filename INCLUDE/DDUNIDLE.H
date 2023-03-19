@@ -36,6 +36,7 @@
  * mastery level is 100.
  */ 
 extern unsigned int g_skill_exp_table[100];
+extern unsigned int g_skill_exp_to_level_table[100];
 extern unsigned int g_mastery_exp_table[100];
 extern unsigned int g_mastery_exp_to_level_table[100];
 
